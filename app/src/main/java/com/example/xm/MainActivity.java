@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,12 +28,20 @@ public class MainActivity extends AppCompatActivity {
     private ImageView iv3;
     private TextView tv3;
     private ViewPager2 viewPager2;
+    private LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+        linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Toast.makeText(MainActivity.this, "我被长按了", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
         fragments.add(new HomeFragment());
         fragments.add(new StickerFragment());
         fragments.add(new GIFFragment());
@@ -129,6 +138,7 @@ public void click(View view){
         }
     }
     private void initView() {
+        linearLayout=findViewById(R.id.line1);
         iv1 = findViewById(R.id.iv_1);
         tv1 = findViewById(R.id.tv_1);
         iv2 = findViewById(R.id.iv_2);
