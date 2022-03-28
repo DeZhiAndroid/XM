@@ -1,14 +1,16 @@
 package com.example.xm;
 
+import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -28,20 +30,13 @@ public class MainActivity extends AppCompatActivity {
     private ImageView iv3;
     private TextView tv3;
     private ViewPager2 viewPager2;
-    private LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
-        linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                Toast.makeText(MainActivity.this, "我被长按了", Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
+        verifyStoragePermissions(this);
         fragments.add(new HomeFragment());
         fragments.add(new StickerFragment());
         fragments.add(new GIFFragment());
@@ -58,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                switch (position){
+                switch (position) {
                     case 0:
                         iv1.setImageResource(R.mipmap.sy2);
                         tv1.setTextColor(Color.parseColor("#827B7B"));
@@ -92,8 +87,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-public void click(View view){
-        switch (view.getId()){
+
+    public void click(View view) {
+        switch (view.getId()) {
             case R.id.iv_1:
                 iv1.setImageResource(R.mipmap.sy2);
                 tv1.setTextColor(Color.parseColor("#827B7B"));
@@ -122,12 +118,33 @@ public void click(View view){
                 viewPager2.setCurrentItem(2);
                 break;
         }
-}
+    }
+
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            "android.permission.READ_EXTERNAL_STORAGE",
+            "android.permission.WRITE_EXTERNAL_STORAGE"};
+
+
+    public static void verifyStoragePermissions(Activity activity) {
+        try {
+            //检测是否有写的权限
+            int permission = ActivityCompat.checkSelfPermission(activity,
+                    "android.permission.WRITE_EXTERNAL_STORAGE");
+            if (permission != PackageManager.PERMISSION_GRANTED) {
+                // 没有写的权限，去申请写的权限，会弹出对话框
+                ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private long time = 0;
 
     @Override
     public void onBackPressed() {
-        long mNowTime = System.currentTimeMillis();/**  获取第一次按键时间*/
+        long mNowTime = System.currentTimeMillis();/* 获取第一次按键时间*/
         if ((mNowTime - time) > 1000) {
             Toast.makeText(this, "再按一次退出", Toast.LENGTH_SHORT).show();
             time = mNowTime;
@@ -137,8 +154,8 @@ public void click(View view){
             System.exit(0);
         }
     }
+
     private void initView() {
-        linearLayout=findViewById(R.id.line1);
         iv1 = findViewById(R.id.iv_1);
         tv1 = findViewById(R.id.tv_1);
         iv2 = findViewById(R.id.iv_2);
