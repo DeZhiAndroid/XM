@@ -9,7 +9,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import java.util.ArrayList;
 
 public class CameraAdapter extends FragmentStateAdapter {
-    private ArrayList<Fragment>fragments=new ArrayList<>();
+    private ArrayList<Fragment>fragments;
     public CameraAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle,ArrayList<Fragment>fragments) {
         super(fragmentManager, lifecycle);
         this.fragments=fragments;
