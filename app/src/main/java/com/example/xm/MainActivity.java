@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -18,6 +20,7 @@ import com.example.xm.Adapter.CameraAdapter;
 import com.example.xm.Fragment.GIFFragment;
 import com.example.xm.Fragment.HomeFragment;
 import com.example.xm.Fragment.StickerFragment;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 
@@ -30,12 +33,27 @@ public class MainActivity extends AppCompatActivity {
     private ImageView iv3;
     private TextView tv3;
     private ViewPager2 viewPager2;
+    private DrawerLayout line1;
+    private NavigationView mainNav;
+    private ImageView ivFh;
+    private TextView title1;
+    private TextView tvGrzx;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+        ivFh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (line1.isDrawerOpen(GravityCompat.START)) {
+                    line1.closeDrawer(GravityCompat.START);
+                } else {
+                    line1.openDrawer(GravityCompat.START);
+                }
+            }
+        });
         verifyStoragePermissions(this);
         fragments.add(new HomeFragment());
         fragments.add(new StickerFragment());
@@ -128,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static void verifyStoragePermissions(Activity activity) {
         try {
-            //检测是否有写的权限
+            //检测是否有写的权限  √
             int permission = ActivityCompat.checkSelfPermission(activity,
                     "android.permission.WRITE_EXTERNAL_STORAGE");
             if (permission != PackageManager.PERMISSION_GRANTED) {
@@ -163,5 +181,10 @@ public class MainActivity extends AppCompatActivity {
         iv3 = findViewById(R.id.iv_3);
         tv3 = findViewById(R.id.tv_3);
         viewPager2 = findViewById(R.id.viewPager2);
+        line1 = findViewById(R.id.line1);
+        mainNav = findViewById(R.id.mainNav);
+        ivFh = findViewById(R.id.iv_fh);
+        title1 = findViewById(R.id.title1);
+        tvGrzx = findViewById(R.id.tv_grzx);
     }
 }
